@@ -101,7 +101,7 @@ def get_default_net_params():
 
     # weights (conductances*(V-Erever) already):
     default_params = {**default_params,
-                      **{'g_pp': Parameter(0.02, nS), 'g_bp': Parameter(0.05, nS),
+                      **{'g_pp': Parameter(0.2, nS), 'g_bp': Parameter(0.05, nS),
                          'g_pb': Parameter(1.75, nS), 'g_bb': Parameter(5, nS)}
                       }
     
