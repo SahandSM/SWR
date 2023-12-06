@@ -8,3 +8,6 @@
 #       the threshold doesn't change with the addition of P current. but the jup increases dramaticlly.
 #       when we are close enough to the threshold and above it, adding enough adaptation leads to oscilation.
 #       in presense of P current and in oscilation state, the adaptation curret oscilates between 0 and adaptation increment J_spi_p
+#       the value of the adaptation increment affect the oscilation time scale.
+
+# c1c4cc6b4327f4e01f2f03f1c6bdac5d6f424c22: population B also has the same background current as P (100pA). but it is oscilating (droping to zero) without the adaptaiton current. why?
