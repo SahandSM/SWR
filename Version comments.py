@@ -1,0 +1,1 @@
+# ad2296be49f19d6ae177063854ae693de1e0ba7b: created a branch for the first phase of project. making shure the model generates SWR that oscilat.
