@@ -17,3 +17,10 @@
 
 # 51bd0527abdd57a52a8464c307d7d267fc3745c0: the reason is that neurons in population P receive random initial adaption currents. This initial adaptation current 
 #       goes to zero in time. but the neurons are out of sync by this then.
+
+# 6d10f1f92f1269e43a53701a0bbbe37465cf5d54: summary:
+#       withough initial adaptation, all neurons fire in syncrony.
+#       the 100pA constant background current pushes the resting potential to above threshold.
+#       by adding adaption (J_spi_p), we are adding a time dependent current which decays in time and increments each time the population fires.
+#       therefore, the resting potential becomes time dependent. also, it casues the potential to increases slower since the net current is now
+#       smaller or equal to 100pA. Therefore, the firing rate also decreases.
