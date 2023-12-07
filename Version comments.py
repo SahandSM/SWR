@@ -24,3 +24,6 @@
 #       by adding adaption (J_spi_p), we are adding a time dependent current which decays in time and increments each time the population fires.
 #       therefore, the resting potential becomes time dependent. also, it casues the potential to increases slower since the net current is now
 #       smaller or equal to 100pA. Therefore, the firing rate also decreases.
+
+
+# just a comment to prepare for merging
