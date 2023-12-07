@@ -14,3 +14,6 @@
 
 # d3fca3b18848811e8348edacffa3898a365d0471: I set the initial potentail of two neuron in both population equal to -65mV. But the behaviour is still very different.
 #       to do this, I had to note which index neurons are being recorded by the monitor and set them equal.
+
+# 51bd0527abdd57a52a8464c307d7d267fc3745c0: the reason is that neurons in population P receive random initial adaption currents. This initial adaptation current 
+#       goes to zero in time. but the neurons are out of sync by this then.
