@@ -226,4 +226,6 @@ def record_p_currents(built_network, used_net_params, test_params):
     stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record_l, name='stm_p_net')
     built_network.add(stm_p_net)
 
+    # a monitor for b current to neurons in population P is already defined.
+
     return built_network, test_params
