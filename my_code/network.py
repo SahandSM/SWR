@@ -16,9 +16,11 @@ def build_network(net_params, initial_condition):
     data_to_save = {}
         
     neuron_eqs = '''
-        dv/dt = ( g_leak*(v_reset - v) + curr_syn + curr_bg - curr_adapt)/mem_cap: volt (unless refractory)
+        dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt)/mem_cap: volt (unless refractory)
+        curr_l = g_leak*(v_reset - v) : amp
         dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
         curr_syn = curr_p + curr_b : amp
+        curr_net = curr_l + curr_syn + curr_bg - curr_adapt : amp
         mem_cap : farad
         g_leak : siemens
         e_rever : volt
@@ -194,4 +196,36 @@ def record_network(built_network, used_net_params, test_params):
                             size=rec_mempo_num, replace=False),name='stm_b_mempo')
     built_network.add(stm_b_mempo)
         
+    return built_network, test_params
+
+def record_p_currents(built_network, used_net_params, test_params):
+
+    test_seed = int(test_params['random_seed'].get_param())
+    rec_adapt_num = int(test_params['rec_adapt_num'].get_param())
+
+    pop_p = built_network['pop_p']
+
+    # monitor P current to neurons in population P
+    neurons_to_record_pp = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+    stm_pp = StateMonitor(pop_p, 'curr_p', record=neurons_to_record_pp, name='stm_pp')
+    built_network.add(stm_pp)
+
+
+    # monitor background current to neurons in population P
+    neurons_to_record_bg = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+    stm_p_bg = StateMonitor(pop_p, 'curr_bg', record=neurons_to_record_bg, name='stm_p_bg')
+    built_network.add(stm_p_bg)
+
+    # monitor leak current to neurons in population P
+    neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+    stm_p_l = StateMonitor(pop_p, 'curr_l', record=neurons_to_record_l, name='stm_p_l')
+    built_network.add(stm_p_l)
+
+    # monitor net current to neurons in population P
+    neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+    stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record_l, name='stm_p_net')
+    built_network.add(stm_p_net)
+
+    # a monitor for b current to neurons in population P is already defined.
+
     return built_network, test_params
