@@ -29,3 +29,5 @@
 # just a comment to prepare for merging
 
 # 628b49729ab646f53224e101eb6f940ecb416f3b: added a branch to work on adding current monitors
+# c077e9688a95e55f53cd8608ded3d7ac43e2f526: at this point, all current monitors and ready monitors are added.
+#       also decided to put all initial potentials at -60mV to begin with.
