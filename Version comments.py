@@ -31,3 +31,6 @@
 # 628b49729ab646f53224e101eb6f940ecb416f3b: added a branch to work on adding current monitors
 # c077e9688a95e55f53cd8608ded3d7ac43e2f526: at this point, all current monitors and ready monitors are added.
 #       also decided to put all initial potentials at -60mV to begin with.
+
+# 100pA is the current threshold. At back ground currents below 100pA, the resting potential is below -50mV and the cell doesn't fire.
+#   at background currents above 100pA, the resting potential is above -50mV and the cell fries.
