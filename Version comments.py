@@ -34,3 +34,6 @@
 
 # 100pA is the current threshold. At back ground currents below 100pA, the resting potential is below -50mV and the cell doesn't fire.
 #   at background currents above 100pA, the resting potential is above -50mV and the cell fries.
+
+# 4bf29629d4f8b5ccbef589bcfd6235ce7016624b: to decrease the firing rate (increase the interspike interval) we should reduce the background current.
+#       reducing the background current, reduces the resting potential and neuron doesn't fire. so we need to reduce the leak conductance to reduce the resting potential as well.
