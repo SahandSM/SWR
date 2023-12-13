@@ -42,3 +42,7 @@
 #       to make it oscilate I need an oscilatory current to B population. so I add adaptation to po P to make p current oscilatory. and then connected population P to population B.
 #       the result is both populations are oscillating. LFP is also oscilating. but both firing rates and LFP amplitude are verly small.
 #       it gets a bit complicated to increase the firing rats and the LFP amplitude.
+
+# c0c720eac7a09fd9f8b5d372ef3b8729976d4efa: I could increase the LFP amplitude to above 20 by increasing the g_pb. I had to increase background current to P as well to prevent total inhibition.
+#       I also had to increase adaptation increments.
+#       problem is population P firing rate is still as low as 10 spike/s during event!
