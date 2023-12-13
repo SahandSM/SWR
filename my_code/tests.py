@@ -207,3 +207,17 @@ def average_p_currents(network, ready_monitors):
     ready_monitors['stm_p_net'] = trim_brian_monitor(network['stm_p_net'],np.mean(network['stm_p_net'].curr_net, axis=0),pA, start_time, end_time)
 
     return ready_monitors
+
+def average_b_currents(network, ready_monitors):
+    end_time = np.max(network['rtm_b'].t / second) * second
+    start_time = 0 * second
+    current_array = ['stm_b_adp','stm_bb','stm_bp', 'stm_p_bg', 'stm_p_l', 'stm_b_net']
+
+    # ready_monitors['stm_b_adp'] = trim_brian_monitor(network['stm_p_adp'],np.mean(network['stm_p_adp'].curr_adapt, axis=0),pA, start_time, end_time)
+    ready_monitors['stm_bb'] = trim_brian_monitor(network['stm_bb'],np.mean(network['stm_bb'].curr_b, axis=0),pA, start_time, end_time)
+    ready_monitors['stm_bp'] = trim_brian_monitor(network['stm_bp'],np.mean(network['stm_bp'].curr_p, axis=0),pA, start_time, end_time)
+    ready_monitors['stm_bp_bg'] = trim_brian_monitor(network['stm_b_bg'],np.mean(network['stm_b_bg'].curr_bg, axis=0),pA, start_time, end_time)
+    ready_monitors['stm_b_l'] = trim_brian_monitor(network['stm_b_l'],np.mean(network['stm_b_l'].curr_l, axis=0),pA, start_time, end_time)
+    ready_monitors['stm_b_net'] = trim_brian_monitor(network['stm_b_net'],np.mean(network['stm_b_net'].curr_net, axis=0),pA, start_time, end_time)
+
+    return ready_monitors
