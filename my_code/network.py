@@ -243,7 +243,7 @@ def record_b_currents(built_network, used_net_params, test_params):
     built_network.add(stm_bp)
 
     # monitor b current to neurons in population B.
-    stm_bb = StateMonitor(pop_b, 'curr_p', record=neurons_to_record, name='stm_bb')
+    stm_bb = StateMonitor(pop_b, 'curr_b', record=neurons_to_record, name='stm_bb')
     built_network.add(stm_bb)
 
     # monitor background current to neurons in population B
