@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from brian2 import *
 
-def plot_currents_P_neurons(built_network, x_axis_limit):
+def plot_currents_P_neurons(built_network, x_axis_limit,y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     plt.plot(built_network['stm_p_adp'].t,-built_network['stm_p_adp'].curr_adapt[0]/pA,color='magenta', label ='adp')
     plt.plot(built_network['stm_pp'].t,built_network['stm_pp'].curr_p[0]/pA,color='red', label ='P')
@@ -15,11 +15,12 @@ def plot_currents_P_neurons(built_network, x_axis_limit):
     plt.ylabel('Current [pA]')
     plt.title('Currents to a P neurons')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
     plt.legend()
     fig.tight_layout()
     plt.show()
 
-def plot_currents_B_neurons(built_network, x_axis_limit):
+def plot_currents_B_neurons(built_network, x_axis_limit,y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     plt.plot(built_network['stm_b_adp'].t,-built_network['stm_b_adp'].curr_adapt[0]/pA,color='magenta', label ='adp')
     plt.plot(built_network['stm_bp'].t,built_network['stm_bp'].curr_p[0]/pA,color='red', label ='P')
@@ -33,11 +34,12 @@ def plot_currents_B_neurons(built_network, x_axis_limit):
     plt.ylabel('Current [pA]')
     plt.title('Currents to a B neurons')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
     plt.legend()
     fig.tight_layout()
     plt.show()
 
-def plot_current_P_pop(ready_monitors, x_axis_limit):
+def plot_current_P_pop(ready_monitors, x_axis_limit, y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     plt.plot(ready_monitors['stm_p_adp'][0],-ready_monitors['stm_p_adp'][1],color='magenta', label ='adp')
     plt.plot(ready_monitors['stm_pp'][0],ready_monitors['stm_pp'][1],color='red', label ='P')
@@ -51,11 +53,12 @@ def plot_current_P_pop(ready_monitors, x_axis_limit):
     plt.ylabel('Current [pA]')
     plt.title('mean Currents to population P')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
     plt.legend()
     fig.tight_layout()
     plt.show()
 
-def plot_current_B_pop(ready_monitors, x_axis_limit):
+def plot_current_B_pop(ready_monitors, x_axis_limit, y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     plt.plot(ready_monitors['stm_b_adp'][0],-ready_monitors['stm_b_adp'][1],color='magenta', label ='adp')
     plt.plot(ready_monitors['stm_bp'][0],ready_monitors['stm_bp'][1],color='red', label ='P')
@@ -69,11 +72,12 @@ def plot_current_B_pop(ready_monitors, x_axis_limit):
     plt.ylabel('Current [pA]')
     plt.title('mean Currents to population B')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
     plt.legend()
     fig.tight_layout()
     plt.show()
 
-def plot_population_fr(ready_monitors,x_axis_limit):
+def plot_population_fr(ready_monitors,x_axis_limit,y_axis_limit=None):
     fig = plt.figure(figsize=(12,8))
 
     plt.rcParams['font.size'] = '18'
@@ -83,18 +87,20 @@ def plot_population_fr(ready_monitors,x_axis_limit):
     plt.ylabel('Firing Rate [spikes/s]')
     plt.title('Population P')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
 
     plt.subplot(212) 
     plt.plot(ready_monitors['rtm_b'][0],ready_monitors['rtm_b'][1],color='blue')
     plt.xlabel('Time [s]')
     plt.ylabel('Firing Rate [spikes/s]')
     plt.title('Population B')
-
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
+
     fig.tight_layout()
     plt.show()
 
-def plot_mpt_neuron(built_network,x_axis_limit):
+def plot_mpt_neuron(built_network,x_axis_limit, y_axis_limit=None):
     fig = figure(figsize=(12,8))
     plt.rcParams['font.size'] = '18'
 
@@ -105,6 +111,7 @@ def plot_mpt_neuron(built_network,x_axis_limit):
     plt.ylabel('Membrane potential [mV]')
     plt.title('two P neurons')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
 
     plt.subplot(212)
     plt.plot(built_network['stm_b_mempo'].t,built_network['stm_b_mempo'].v[0]/mV,color='blue')
@@ -114,11 +121,12 @@ def plot_mpt_neuron(built_network,x_axis_limit):
     plt.ylabel('Membrane potential [mV]')
     plt.title('two B neurons')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
 
     fig.tight_layout()
     plt.show()
 
-def plot_mpt_pop(ready_monitors,x_axis_limit):
+def plot_mpt_pop(ready_monitors,x_axis_limit, y_axis_limit=None):
     fig = plt.figure(figsize=(12,8))
 
     plt.subplot(211)
@@ -128,6 +136,7 @@ def plot_mpt_pop(ready_monitors,x_axis_limit):
     plt.ylabel('Membrane potential [mV]')
     plt.title('Population A')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
 
     plt.subplot(212)
     plt.plot(ready_monitors['stm_b_mempo'][0],ready_monitors['stm_b_mempo'][1],color='blue')
@@ -136,11 +145,12 @@ def plot_mpt_pop(ready_monitors,x_axis_limit):
     plt.ylabel('Membrane potential [mV]')
     plt.title('population B')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
 
     fig.tight_layout()
     plt.show()
 
-def plot_lowpass_LFP(ready_monitors,x_axis_limit):
+def plot_lowpass_LFP(ready_monitors,x_axis_limit,y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     plt.plot(ready_monitors['lowpass_lfp'][0],ready_monitors['lowpass_lfp'][1])
     
@@ -148,6 +158,8 @@ def plot_lowpass_LFP(ready_monitors,x_axis_limit):
     plt.ylabel('current [pA]')
     plt.title('lowpass LFP')
     plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
+
 
     fig.tight_layout()
     plt.show()
