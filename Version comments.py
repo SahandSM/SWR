@@ -37,3 +37,8 @@
 
 # 4bf29629d4f8b5ccbef589bcfd6235ce7016624b: to decrease the firing rate (increase the interspike interval) we should reduce the background current.
 #       reducing the background current, reduces the resting potential and neuron doesn't fire. so we need to reduce the leak conductance to reduce the resting potential as well.
+
+# 2f47508449e8e034660dbebeff38a816691487b5: I tried to get population B to oscilate in isolation and monitor b current (LFP) to get peaks. the problem is that b current is constantly above min_peak.
+#       to make it oscilate I need an oscilatory current to B population. so I add adaptation to po P to make p current oscilatory. and then connected population P to population B.
+#       the result is both populations are oscillating. LFP is also oscilating. but both firing rates and LFP amplitude are verly small.
+#       it gets a bit complicated to increase the firing rats and the LFP amplitude.
