@@ -46,3 +46,9 @@
 # c0c720eac7a09fd9f8b5d372ef3b8729976d4efa: I could increase the LFP amplitude to above 20 by increasing the g_pb. I had to increase background current to P as well to prevent total inhibition.
 #       I also had to increase adaptation increments.
 #       problem is population P firing rate is still as low as 10 spike/s during event!
+
+# 82b05ff0397c213ef4284ce833ba40761e63abee: instead of getting the oscilatory current to pop B from population P wit adaptation, I added addaptation to population B itself.
+#       the results: b to p current peaks are above 30.
+#                    both population firing rates are 0 during non-states. 
+#                    both P and B firing rates are still relatively low during even (10 and 22 spikes/s respectively)
+#       note: initial values are not random yet.
