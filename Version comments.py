@@ -52,3 +52,9 @@
 #                    both population firing rates are 0 during non-states. 
 #                    both P and B firing rates are still relatively low during even (10 and 22 spikes/s respectively)
 #       note: initial values are not random yet.
+
+# 314176134b504e6d7039a817409a590da75f6eb3: added the random initials for P and B population in previous commit.
+#       reutls: I have regular shapr waves with B currents passing 50pA.
+#       B and P firing rates are to low (10 and 30 spikes/second)
+#       Stephano: low firing rates are because neurons are firing too synchronous. therefour averaging the number of spike in the FWHM window is low.
+#       next step: need to make the less synchronous and irregualr
