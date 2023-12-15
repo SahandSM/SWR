@@ -58,3 +58,9 @@
 #       B and P firing rates are to low (10 and 30 spikes/second)
 #       Stephano: low firing rates are because neurons are firing too synchronous. therefour averaging the number of spike in the FWHM window is low.
 #       next step: need to make the less synchronous and irregualr
+
+# 94c62729f74387833a7cbc9265eadc00caf1fea2: added a random timed array current to the mdoel. (replaced background current with timed array)
+#       results: SW are now irregular but still very synchronous firing of neurons.
+#       note: both mean back ground current and time step for the timed array function has and affect. if dt is too small, we still have regular waves.
+#             it is because neuron is not fast enough to oscillate with it.
+#             also, I should note if the mean current is around current threshold (100pA) then it is like turning the neuron on and off. is it no cheating?
