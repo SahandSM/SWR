@@ -100,6 +100,25 @@ def plot_population_fr(ready_monitors,x_axis_limit,y_axis_limit=None):
     fig.tight_layout()
     plt.show()
 
+def plot_rasterplot(tested_network,x_axis_limit,y_axis_limit=None):
+    fig = plt.figure(figsize=(12,8))
+    plt.rcParams['font.size'] = '18'
+    plt.subplot(211)
+    plt.scatter(tested_network['spm_p'].t,tested_network['spm_p'].i,s=0.2,color='red')
+    plt.xlabel('index [s]')
+    plt.ylabel('neuron index i [au]')
+    plt.title('Population P raster plot')
+    plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
+    plt.subplot(212)
+    plt.scatter(tested_network['spm_b'].t,tested_network['spm_b'].i,s=0.2,color='blue')
+    plt.xlabel('index [s]')
+    plt.ylabel('neuron index i [au]')
+    plt.title('Population A raster plot')
+    plt.xlim(x_axis_limit)
+    plt.ylim(y_axis_limit)
+    fig.tight_layout()
+
 def plot_mpt_neuron(built_network,x_axis_limit, y_axis_limit=None):
     fig = figure(figsize=(12,8))
     plt.rcParams['font.size'] = '18'
