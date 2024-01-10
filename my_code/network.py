@@ -198,7 +198,7 @@ def record_network(built_network, used_net_params, test_params):
         
     return built_network, test_params
 
-def record_p_currents(built_network, used_net_params, test_params):
+def record_p_currents(built_network, used_net_params, test_params, currents_to_record):
 
     test_seed = int(test_params['random_seed'].get_param())
     rec_adapt_num = int(test_params['rec_adapt_num'].get_param())
@@ -206,31 +206,35 @@ def record_p_currents(built_network, used_net_params, test_params):
     pop_p = built_network['pop_p']
 
     # monitor P current to neurons in population P
-    neurons_to_record_pp = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-    stm_pp = StateMonitor(pop_p, 'curr_p', record=neurons_to_record_pp, name='stm_pp')
-    built_network.add(stm_pp)
+    if currents_to_record['curr_p']:
+        neurons_to_record_pp = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+        stm_pp = StateMonitor(pop_p, 'curr_p', record=neurons_to_record_pp, name='stm_pp')
+        built_network.add(stm_pp)
 
 
     # monitor background current to neurons in population P
-    neurons_to_record_bg = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-    stm_p_bg = StateMonitor(pop_p, 'curr_bg', record=neurons_to_record_bg, name='stm_p_bg')
-    built_network.add(stm_p_bg)
+    if currents_to_record['curr_bg']:
+        neurons_to_record_bg = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+        stm_p_bg = StateMonitor(pop_p, 'curr_bg', record=neurons_to_record_bg, name='stm_p_bg')
+        built_network.add(stm_p_bg)
 
     # monitor leak current to neurons in population P
-    neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-    stm_p_l = StateMonitor(pop_p, 'curr_l', record=neurons_to_record_l, name='stm_p_l')
-    built_network.add(stm_p_l)
+    if currents_to_record['curr_l']:
+        neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+        stm_p_l = StateMonitor(pop_p, 'curr_l', record=neurons_to_record_l, name='stm_p_l')
+        built_network.add(stm_p_l)
 
     # monitor net current to neurons in population P
-    neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-    stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record_l, name='stm_p_net')
-    built_network.add(stm_p_net)
+    if currents_to_record['curr_net']:
+        neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
+        stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record_l, name='stm_p_net')
+        built_network.add(stm_p_net)
 
     # a monitor for b current to neurons in population P is already defined.
 
     return built_network, test_params
 
-def record_b_currents(built_network, used_net_params, test_params):
+def record_b_currents(built_network, used_net_params, test_params,currents_to_record):
 
     test_seed = int(test_params['random_seed'].get_param())
     rec_adapt_num = int(test_params['rec_adapt_num'].get_param())
@@ -239,24 +243,29 @@ def record_b_currents(built_network, used_net_params, test_params):
 
 
     # monitor P current to neurons in population B
-    stm_bp = StateMonitor(pop_b, 'curr_p', record=neurons_to_record, name='stm_bp')
-    built_network.add(stm_bp)
+    if currents_to_record['curr_p']:
+        stm_bp = StateMonitor(pop_b, 'curr_p', record=neurons_to_record, name='stm_bp')
+        built_network.add(stm_bp)
 
     # monitor b current to neurons in population B.
-    stm_bb = StateMonitor(pop_b, 'curr_b', record=neurons_to_record, name='stm_bb')
-    built_network.add(stm_bb)
+    if currents_to_record['curr_b']:
+        stm_bb = StateMonitor(pop_b, 'curr_b', record=neurons_to_record, name='stm_bb')
+        built_network.add(stm_bb)
 
     # monitor background current to neurons in population B
-    stm_b_bg = StateMonitor(pop_b, 'curr_bg', record=neurons_to_record, name='stm_b_bg')
-    built_network.add(stm_b_bg)
+    if currents_to_record['curr_bg']:
+        stm_b_bg = StateMonitor(pop_b, 'curr_bg', record=neurons_to_record, name='stm_b_bg')
+        built_network.add(stm_b_bg)
 
     # monitor leak current to neurons in population B
-    stm_b_l = StateMonitor(pop_b, 'curr_l', record=neurons_to_record, name='stm_b_l')
-    built_network.add(stm_b_l)
+    if currents_to_record['curr_l']:
+        stm_b_l = StateMonitor(pop_b, 'curr_l', record=neurons_to_record, name='stm_b_l')
+        built_network.add(stm_b_l)
 
     # monitor net current to neurons in population B
-    stm_b_net = StateMonitor(pop_b, 'curr_net', record=neurons_to_record, name='stm_b_net')
-    built_network.add(stm_b_net)
+    if currents_to_record['curr_net']:
+        stm_b_net = StateMonitor(pop_b, 'curr_net', record=neurons_to_record, name='stm_b_net')
+        built_network.add(stm_b_net)
 
 
     return built_network, test_params
