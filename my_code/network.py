@@ -99,12 +99,16 @@ def build_network(net_params, initial_condition):
 
     curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
     curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
-    curr_bg_noise_amp = net_params['curr_bg_noise_amp'].get_param()
+    curr_bg_noise_amp_p = net_params['curr_bg_noise_amp_p'].get_param()
+    curr_bg_noise_amp_b = net_params['curr_bg_noise_amp_b'].get_param()
     noise_dt = net_params['curr_bg_noise_dt'].get_param()
+    pop_p_noise_dim = 1 if net_params['curr_bg_equal_noise'].get_param() else pop_p.N
+    pop_b_noise_dim = 1 if net_params['curr_bg_equal_noise'].get_param() else pop_b.N
+    print('pop_p_noise_dim:',pop_p_noise_dim)
     @network_operation(dt=noise_dt)
     def change_I():
-        pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp*rand(pop_p.N)
-        pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp*rand(pop_b.N)  
+        pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp_p*rand(pop_p_noise_dim)
+        pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp_b*rand(pop_b_noise_dim)  
 
     built_network = Network(collect())
     
