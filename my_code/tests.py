@@ -13,9 +13,6 @@ def run_test(network, test_params, used_net_params, stimulation):
     n_stim = test_params['n_stim'].get_param()
     # network.run(stim_time, report='text')
 
-    curr_bg_length = int((prep_time+sim_time)/defaultclock.dt)
-    I_random = TimedArray((110-20*rand(curr_bg_length))*pA,dt=100*ms)
-
     network.run(prep_time, report = 'text')
 
     if stimulation == 'none':

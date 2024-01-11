@@ -20,7 +20,7 @@ def build_network(net_params, initial_condition):
         curr_l = g_leak*(v_reset - v) : amp
         dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
         curr_syn = curr_p + curr_b : amp
-        curr_bg = I_random(t) : amp
+        curr_bg : amp
         curr_net = curr_l + curr_syn + curr_bg - curr_adapt : amp
         mem_cap : farad
         g_leak : siemens
@@ -72,7 +72,7 @@ def build_network(net_params, initial_condition):
             pop.g_leak = net_params['g_leak_p'].get_param()
             pop.v_reset = net_params['v_reset_p'].get_param()
             pop.tau_adapt = net_params['tau_adapt_p'].get_param()
-            # pop.curr_bg = net_params['curr_bg_p'].get_param()
+            pop.curr_bg = net_params['curr_bg_p'].get_param()
             pop.J_spi = net_params['J_spi_p'].get_param()
             pop.g_ip = net_params['g_pp'].get_param()
             pop.g_ib = net_params['g_pb'].get_param()
@@ -84,7 +84,7 @@ def build_network(net_params, initial_condition):
             pop.g_leak = net_params['g_leak_b'].get_param()
             pop.v_reset = net_params['v_reset_b'].get_param()
             pop.tau_adapt = net_params['tau_adapt_b'].get_param()
-            # pop.curr_bg = net_params['curr_bg_b'].get_param()
+            pop.curr_bg = net_params['curr_bg_b'].get_param()
             pop.J_spi = net_params['J_spi_b'].get_param()
             pop.g_ip = net_params['g_bp'].get_param()
             pop.g_ib = net_params['g_bb'].get_param()
