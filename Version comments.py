@@ -69,3 +69,13 @@
 #       by adding a random timed array, sucessfully created irregulatiry in SW. However neurons in each population are still
 #       firing in synchrony. as a result, the firing rates oscilate sharply between 0 and non zero. the SW are also sharper than expected. to overcome this, we
 #       decided to make the input current randomly change differetnly from neuron to neuron.
+
+# 88e49830991bd765d13196f84ce7b2cfa3918fc1: added random back ground current to each neuron separately.
+#       - to add noise to each neuron separately, I used Brian network operation and defined a function to change background current every noise_dt step.
+#       - I defined background current base, noise_dt and noise amplitude. the background current will be base + noise.
+#       - I set the noise_dt equal to defaultclock.dt. I think this is getting a better result. But it takes a long time. so I increased defaultclock.dt to 1ms.
+#       - the result is irregualr and asynchronouse firing of neurons in each population. the populations are synchronous though such that their peak activiy happens at the same time.
+#       - I should study the firing rates of each populaiton and see if it meets the sW event expectation. I think pop P is much lower than required and B is much higher that required.
+#       - in order to get the irregular firing of the population, I set the background current close to threshold current such that the noise can trun some neurons
+#         off and on during the simulation. the result is that at each active interval, the activity is different. but the activce intervals still look regulat (the inter event intervals seem to be of equal size.)
+#         I should check for the inter event intervals to check for this.

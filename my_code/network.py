@@ -96,7 +96,16 @@ def build_network(net_params, initial_condition):
         pop.tau_d_b = net_params['tau_d_b'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
-            
+
+    curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
+    curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
+    curr_bg_noise_amp = net_params['curr_bg_noise_amp'].get_param()
+    noise_dt = net_params['curr_bg_noise_dt'].get_param()
+    @network_operation(dt=noise_dt)
+    def change_I():
+        pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp*rand(pop_p.N)
+        pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp*rand(pop_b.N)  
+
     built_network = Network(collect())
     
     print('Total number of synapses')

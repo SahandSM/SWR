@@ -89,8 +89,9 @@ def get_default_net_params():
     
     # neuron populations:
     default_params = {**default_params,
-                      **{'n_p': Parameter(8200), 'curr_bg_p': Parameter(200, pA),
-                         'n_b': Parameter(135), 'curr_bg_b': Parameter(200, pA)}
+                      **{'n_p': Parameter(8200), 'curr_bg_p': Parameter(200, pA),'curr_bg_base_p':Parameter(110,pA),
+                         'n_b': Parameter(135), 'curr_bg_b': Parameter(200, pA), 'curr_bg_base_b':Parameter(110,pA),
+                         'curr_bg_noise_amp': Parameter(20,pA), 'curr_bg_noise_dt': Parameter(10,ms)}
                       }
 
     # connectivity and other dimensionless parameters:
