@@ -64,3 +64,8 @@
 #       note: both mean back ground current and time step for the timed array function has and affect. if dt is too small, we still have regular waves.
 #             it is because neuron is not fast enough to oscillate with it.
 #             also, I should note if the mean current is around current threshold (100pA) then it is like turning the neuron on and off. is it no cheating?
+
+#a876ecf6c10c58042277254f849dd1262defb920: creating a new branch to apply netwrok operation to change the input current as the model runs.
+#       by adding a random timed array, sucessfully created irregulatiry in SW. However neurons in each population are still
+#       firing in synchrony. as a result, the firing rates oscilate sharply between 0 and non zero. the SW are also sharper than expected. to overcome this, we
+#       decided to make the input current randomly change differetnly from neuron to neuron.
