@@ -91,7 +91,7 @@ def get_default_net_params():
     default_params = {**default_params,
                       **{'n_p': Parameter(8200), 'curr_bg_p': Parameter(200, pA),'curr_bg_base_p':Parameter(110,pA), 'curr_bg_noise_amp_p': Parameter(20,pA),
                          'n_b': Parameter(135), 'curr_bg_b': Parameter(200, pA), 'curr_bg_base_b':Parameter(110,pA), 'curr_bg_noise_amp_b': Parameter(20,pA), 
-                         'curr_bg_noise_dt': Parameter(10,ms),'curr_bg_equal_noise': Parameter(False)}
+                         'curr_bg_noise_dt': Parameter(10,ms),'curr_bg_equal_noise': Parameter(False), 'curr_bg_equal_mean_to_pop': Parameter(False)}
                       }
 
     # connectivity and other dimensionless parameters:
