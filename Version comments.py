@@ -90,3 +90,5 @@
 # 0adee5535e7fdef2c943c3cfb1978036ab405be6: renamed equal noise parameters to clarify a confusion:
 #       - if the current to each neuron is different, then the mean current to each population cannot be the same since there are different number of neurons in eac populaiton.
 #       - if the current to all neurons are the same in one population, they can still be different from one population to another. this can be set by curr_bg_equal_to_pop parameter.
+
+# 0adee5535e7fdef2c943c3cfb1978036ab405be6: in previous commit, the rand function was also modified so that the noise is symmetric around base.
