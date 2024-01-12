@@ -79,3 +79,8 @@
 #       - in order to get the irregular firing of the population, I set the background current close to threshold current such that the noise can trun some neurons
 #         off and on during the simulation. the result is that at each active interval, the activity is different. but the activce intervals still look regulat (the inter event intervals seem to be of equal size.)
 #         I should check for the inter event intervals to check for this.
+
+# b146d6749efa1ba44f17cc18f28676ec739b8b9a: I noticed even with equal noise to each neuron, the irregularity is much less than timed array. 
+#       - I guessd the reason is that the noise to each population is also different now. so put a seed in network operation to make the noise to eachp population equal.
+#         I had to define two @netwrok_operations and put a seed before each function. also I had to base the seed on the clock time so that each time the function is run, the seed is different from the previous run but equal for both populaitons.
+#        resutls: the irregulatiry increased. but is equal noise between populations a feasible assumption?
