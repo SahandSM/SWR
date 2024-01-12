@@ -86,3 +86,7 @@
 #        resutls: the irregulatiry increased. but is equal noise between populations a feasible assumption?
 
 # e2ad796b06a811a89e2b122064b40a0d0990d9f3: implemented equal noise to both populations in a simpler way by creating the noise once and decuting the same noise from each population base current. 
+
+# 0adee5535e7fdef2c943c3cfb1978036ab405be6: renamed equal noise parameters to clarify a confusion:
+#       - if the current to each neuron is different, then the mean current to each population cannot be the same since there are different number of neurons in eac populaiton.
+#       - if the current to all neurons are the same in one population, they can still be different from one population to another. this can be set by curr_bg_equal_to_pop parameter.
