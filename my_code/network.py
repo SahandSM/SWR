@@ -96,7 +96,22 @@ def build_network(net_params, initial_condition):
         pop.tau_d_b = net_params['tau_d_b'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
-            
+
+    curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
+    curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
+    curr_bg_noise_amp_p = net_params['curr_bg_noise_amp_p'].get_param()
+    curr_bg_noise_amp_b = net_params['curr_bg_noise_amp_b'].get_param()
+    noise_dt = net_params['curr_bg_noise_dt'].get_param()
+    pop_p_noise_dim = 1 if net_params['curr_bg_equal_to_neurons'].get_param() else pop_p.N
+    pop_b_noise_dim = 1 if net_params['curr_bg_equal_to_neurons'].get_param() else pop_b.N
+    curr_bg_equal_mean_to_pop = net_params['curr_bg_equal_to_pop'].get_param()
+    @network_operation(dt=noise_dt)
+    def change_curr_bg():        
+        noise_p = uniform(-1,1,pop_p_noise_dim)
+        noise_b = noise_p[:pop_b_noise_dim] if curr_bg_equal_mean_to_pop else uniform(-1,1,pop_b_noise_dim)
+        pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp_p*noise_p
+        pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp_b*noise_b
+
     built_network = Network(collect())
     
     print('Total number of synapses')

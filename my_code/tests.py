@@ -12,6 +12,9 @@ def run_test(network, test_params, used_net_params, stimulation):
     stim_time = test_params['stim_time'].get_param()
     n_stim = test_params['n_stim'].get_param()
     # network.run(stim_time, report='text')
+    sim_dt = test_params['sim_dt'].get_param()
+    defaultclock.dt = sim_dt
+    print('default clock dt:', defaultclock.dt)
 
     network.run(prep_time, report = 'text')
 
