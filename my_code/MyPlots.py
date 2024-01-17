@@ -114,7 +114,7 @@ def plot_rasterplot(tested_network,x_axis_limit,y_axis_limit=None):
     plt.scatter(tested_network['spm_b'].t,tested_network['spm_b'].i,s=0.2,color='blue')
     plt.xlabel('index [s]')
     plt.ylabel('neuron index i [au]')
-    plt.title('Population A raster plot')
+    plt.title('Population B raster plot')
     plt.xlim(x_axis_limit)
     plt.ylim(y_axis_limit)
     fig.tight_layout()
@@ -153,7 +153,7 @@ def plot_mpt_pop(ready_monitors,x_axis_limit, y_axis_limit=None):
     plt.rcParams['font.size'] = '18'
     plt.xlabel('Time [s]')
     plt.ylabel('Membrane potential [mV]')
-    plt.title('Population A')
+    plt.title('Population P')
     plt.xlim(x_axis_limit)
     plt.ylim(y_axis_limit)
 
