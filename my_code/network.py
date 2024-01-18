@@ -16,12 +16,10 @@ def build_network(net_params, initial_condition):
     data_to_save = {}
         
     neuron_eqs = '''
-        dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt)/mem_cap: volt (unless refractory)
-        curr_l = g_leak*(v_reset - v) : amp
-        dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
+        dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt + curr_e)/mem_cap: volt (unless refractory)
         curr_syn = curr_p + curr_b : amp
-        curr_bg : amp
         curr_net = curr_l + curr_syn + curr_bg - curr_adapt : amp
+        curr_bg : amp
         mem_cap : farad
         g_leak : siemens
         e_rever : volt
@@ -33,7 +31,14 @@ def build_network(net_params, initial_condition):
         g_ip : siemens
         g_ib : siemens
     '''
+    curr_l_eqs = '''
+        curr_l = g_leak*(v_reset - v) : amp
+        '''
     
+    curr_adapt_eqs = '''
+        dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
+        '''
+
     curr_p_eqs = '''
         curr_p = g_p*(e_p - v) : amp
         dg_p/dt = -g_p/ tau_d_p : siemens
@@ -47,8 +52,15 @@ def build_network(net_params, initial_condition):
         e_b : volt
         tau_d_b: second
     '''
+    curr_e_eqs = '''
+        curr_e = g_e * (e_e - v): amp
+        dg_e / dt = -g_e / tau_d_e: siemens
+        e_b : volt
+        tau_d_e: second
+    '''
+
     
-    all_eqs = neuron_eqs + curr_p_eqs + curr_b_eqs
+    all_eqs = neuron_eqs + curr_l_eqs + curr_adapt_eqs + curr_p_eqs + curr_b_eqs + curr_e_eqs
 
     """ CREATE CELL POPULATIONS """
 
