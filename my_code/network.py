@@ -153,6 +153,14 @@ def build_network(net_params, initial_condition):
     conn_bb = Connectivity(prob_bb, n_b, n_b, 'conn_bb')
     data_to_save['conn_bb'] = conn_bb
 
+    prob_pe = net_params['prob_pe'].get_param()
+    conn_pe = Connectivity(prob_pe, n_e, n_p, 'conn_pe')
+    data_to_save['conn_pe'] = conn_pe
+
+    prob_be = net_params['prob_be'].get_param()
+    conn_be = Connectivity(prob_be, n_e, n_b, 'conn_be')
+    data_to_save['conn_be'] = conn_be
+
     tau_l = net_params['tau_l'].get_param()
     
     syn_pp = Synapses(pop_p, pop_p, on_pre='g_p += g_ip',
@@ -178,6 +186,18 @@ def build_network(net_params, initial_condition):
     syn_bb.connect(i=conn_bb.pre_index, j=conn_bb.post_index)
     built_network.add(syn_bb)
     print('B->B: %s' % f'{syn_bb.N[:]:,}')
+
+    syn_pe = Synapses(pop_e, pop_p, on_pre='g_e += g_ie',
+                      delay=tau_l, name='syn_pe')
+    syn_pe.connect(i=conn_pe.pre_index, j=conn_pe.post_index)
+    built_network.add(syn_pe)
+    print('E->P: %s' % f'{syn_pe.N[:]:,}')
+
+    syn_be = Synapses(pop_e, pop_b, on_pre='g_e += g_ie',
+                      delay=tau_l, name='syn_be')
+    syn_be.connect(i=conn_be.pre_index, j=conn_be.post_index)
+    built_network.add(syn_be)
+    print('E->B: %s' % f'{syn_be.N[:]:,}')
         
     if initial_condition == 'none':
         pop_p.v = pop_p.e_rever -10*rand(n_p)*mV
