@@ -113,6 +113,14 @@ def get_default_net_params():
                          'tau_l': Parameter(1, ms)}
                       }
 
+    # parameters related to Poisson population
+    default_params = {**default_params,
+                      **{'n_e': Parameter(500), 'tau_d_e': Parameter(2, ms), 'e_e': Parameter(0, mV),
+                         'poisson_rate': Parameter(50, Hz),
+                         'g_pe': Parameter(0, nS), 'g_be': Parameter(0, nS),
+                         'prob_pe': Parameter(0.1), 'prob_be': Parameter(0.1)}
+                     }
+
     return default_params
 
 
