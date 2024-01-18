@@ -18,7 +18,7 @@ def build_network(net_params, initial_condition):
     neuron_eqs = '''
         dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt + curr_e)/mem_cap: volt (unless refractory)
         curr_syn = curr_p + curr_b : amp
-        curr_net = curr_l + curr_syn + curr_bg - curr_adapt : amp
+        curr_net = curr_l + curr_syn + curr_bg - curr_adapt + curr_e : amp
         curr_bg : amp
         mem_cap : farad
         g_leak : siemens
