@@ -30,6 +30,7 @@ def build_network(net_params, initial_condition):
         J_spi : amp
         g_ip : siemens
         g_ib : siemens
+        g_ie : siemens
     '''
     curr_l_eqs = '''
         curr_l = g_leak*(v_reset - v) : amp
@@ -66,6 +67,8 @@ def build_network(net_params, initial_condition):
 
     n_p = int(net_params['n_p'].get_param())
     n_b = int(net_params['n_b'].get_param())
+    n_e = int(net_params['n_e']).get_param())
+    poisson_rate = int(net_params['poisson_rate']).get_param())
     all_neurons = []
             
     pop_p = NeuronGroup(n_p, model=all_eqs, threshold='v > v_stop', reset='''v = v_reset
@@ -78,6 +81,9 @@ def build_network(net_params, initial_condition):
                         ''', refractory='tau_refr', method='euler', name='pop_b')
     all_neurons.append(pop_b)
 
+    pop_e = PoissonGroup(n_e, rates = poisson_rate, name='pop_e')
+    all_neurons.append(pop_e)
+
     for pop in all_neurons:
         if pop.name == 'pop_p':
             pop.mem_cap = net_params['mem_cap_p'].get_param()
@@ -88,6 +94,7 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_p'].get_param()
             pop.g_ip = net_params['g_pp'].get_param()
             pop.g_ib = net_params['g_pb'].get_param()
+            pop.g_ib = net_params['g_pe'].get_param()
             pop.v_stop = net_params['v_stop_p'].get_param()
             pop.e_rever = pop.v_reset
             
@@ -100,14 +107,17 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_b'].get_param()
             pop.g_ip = net_params['g_bp'].get_param()
             pop.g_ib = net_params['g_bb'].get_param()
+            pop.g_ib = net_params['g_be'].get_param()
             pop.v_stop = net_params['v_stop_b'].get_param()
             pop.e_rever = pop.v_reset
         
         pop.tau_refr = net_params['tau_refr'].get_param()
         pop.tau_d_p = net_params['tau_d_p'].get_param()
         pop.tau_d_b = net_params['tau_d_b'].get_param()
+        pop.tau_d_b = net_params['tau_d_e'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
+        pop.e_e = net_params['e_e'].get_param()
 
     curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
     curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
