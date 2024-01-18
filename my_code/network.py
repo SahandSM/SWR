@@ -56,7 +56,7 @@ def build_network(net_params, initial_condition):
     curr_e_eqs = '''
         curr_e = g_e * (e_e - v): amp
         dg_e / dt = -g_e / tau_d_e: siemens
-        e_b : volt
+        e_e : volt
         tau_d_e: second
     '''
 
@@ -67,8 +67,8 @@ def build_network(net_params, initial_condition):
 
     n_p = int(net_params['n_p'].get_param())
     n_b = int(net_params['n_b'].get_param())
-    n_e = int(net_params['n_e']).get_param())
-    poisson_rate = int(net_params['poisson_rate']).get_param())
+    n_e = int(net_params['n_e'].get_param())
+    poisson_rate = net_params['poisson_rate'].get_param()
     all_neurons = []
             
     pop_p = NeuronGroup(n_p, model=all_eqs, threshold='v > v_stop', reset='''v = v_reset
@@ -82,7 +82,6 @@ def build_network(net_params, initial_condition):
     all_neurons.append(pop_b)
 
     pop_e = PoissonGroup(n_e, rates = poisson_rate, name='pop_e')
-    all_neurons.append(pop_e)
 
     for pop in all_neurons:
         if pop.name == 'pop_p':
@@ -94,7 +93,7 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_p'].get_param()
             pop.g_ip = net_params['g_pp'].get_param()
             pop.g_ib = net_params['g_pb'].get_param()
-            pop.g_ib = net_params['g_pe'].get_param()
+            pop.g_ie = net_params['g_pe'].get_param()
             pop.v_stop = net_params['v_stop_p'].get_param()
             pop.e_rever = pop.v_reset
             
@@ -107,14 +106,14 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_b'].get_param()
             pop.g_ip = net_params['g_bp'].get_param()
             pop.g_ib = net_params['g_bb'].get_param()
-            pop.g_ib = net_params['g_be'].get_param()
+            pop.g_ie = net_params['g_be'].get_param()
             pop.v_stop = net_params['v_stop_b'].get_param()
             pop.e_rever = pop.v_reset
         
         pop.tau_refr = net_params['tau_refr'].get_param()
         pop.tau_d_p = net_params['tau_d_p'].get_param()
         pop.tau_d_b = net_params['tau_d_b'].get_param()
-        pop.tau_d_b = net_params['tau_d_e'].get_param()
+        pop.tau_d_e = net_params['tau_d_e'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
         pop.e_e = net_params['e_e'].get_param()
