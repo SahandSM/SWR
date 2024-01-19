@@ -101,3 +101,6 @@
 #       one way to resolve it is to make the times constant for the adaptation different from neuron to neuron. but how to do it without introducing any kind of noise to adaptation?
 #       I should either add noise to adaptation of eliminate P to P current.
 #       I will takel the latte rapproach first.
+
+# 4392d68ae2786e0d41f51c2cc253a2dd4550b4bf:
+#       creating a new branch to work on Stefano's diea. the diea is to adjust the Poisson current according to the A to B and P currents from his lab rotation.
