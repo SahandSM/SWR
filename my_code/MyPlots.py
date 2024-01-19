@@ -9,7 +9,7 @@ def plot_currents_P_neurons(built_network, currents_to_plot, x_axis_limit,y_axis
     if currents_to_plot['curr_bg']: plt.plot(built_network['stm_p_bg'].t,built_network['stm_p_bg'].curr_bg[0]/pA,color='gray', label = 'bg')
     if currents_to_plot['curr_l']: plt.plot(built_network['stm_p_l'].t,built_network['stm_p_l'].curr_l[0]/pA,color='brown', label = 'l')
     if currents_to_plot['curr_net']: plt.plot(built_network['stm_p_net'].t,built_network['stm_p_net'].curr_net[0]/pA,linestyle='-.',color='purple', label ='net')
-    if currents_to_plot['curr_e']: plt.plot(built_network['stm_p_e'].t,built_network['stm_p_e'].curr_e[0]/pA,linestyle='-.',color='black', label ='E')
+    if currents_to_plot['curr_e']: plt.plot(built_network['stm_p_e'].t,built_network['stm_p_e'].curr_e[0]/pA,color='black', label ='E')
 
     plt.rcParams['font.size'] = '18'
     plt.xlabel('Time [s]')
@@ -29,7 +29,7 @@ def plot_currents_B_neurons(built_network, currents_to_plot, x_axis_limit,y_axis
     if currents_to_plot['curr_bg']: plt.plot(built_network['stm_b_bg'].t,built_network['stm_b_bg'].curr_bg[0]/pA,color='gray', label = 'bg')
     if currents_to_plot['curr_l']: plt.plot(built_network['stm_b_l'].t,built_network['stm_b_l'].curr_l[0]/pA,color='brown', label = 'l')
     if currents_to_plot['curr_net']: plt.plot(built_network['stm_b_net'].t,built_network['stm_b_net'].curr_net[0]/pA,linestyle='-.',color='purple', label ='net')
-    if currents_to_plot['curr_e']: plt.plot(built_network['stm_b_e'].t,built_network['stm_b_e'].curr_e[0]/pA,linestyle='-.',color='black', label ='E')
+    if currents_to_plot['curr_e']: plt.plot(built_network['stm_b_e'].t,built_network['stm_b_e'].curr_e[0]/pA,color='black', label ='E')
 
 
     plt.rcParams['font.size'] = '18'
@@ -50,7 +50,7 @@ def plot_current_P_pop(ready_monitors, currents_to_plot, x_axis_limit, y_axis_li
     if currents_to_plot['curr_bg']: plt.plot(ready_monitors['stm_p_bg'][0],ready_monitors['stm_p_bg'][1],color='gray', label = 'bg')
     if currents_to_plot['curr_l']: plt.plot(ready_monitors['stm_p_l'][0],ready_monitors['stm_p_l'][1],color='brown', label = 'l')
     if currents_to_plot['curr_net']: plt.plot(ready_monitors['stm_p_net'][0],ready_monitors['stm_p_net'][1],linestyle='-.', color='purple', label ='net')
-    if currents_to_plot['curr_e']: plt.plot(ready_monitors['stm_p_e'][0],ready_monitors['stm_p_e'][1],linestyle='-.', color='black', label ='E')
+    if currents_to_plot['curr_e']: plt.plot(ready_monitors['stm_p_e'][0],ready_monitors['stm_p_e'][1], color='black', label ='E')
 
     plt.rcParams['font.size'] = '18'
     plt.xlabel('Time [s]')
@@ -70,7 +70,7 @@ def plot_current_B_pop(ready_monitors, currents_to_plot, x_axis_limit, y_axis_li
     if currents_to_plot['curr_bg']: plt.plot(ready_monitors['stm_b_bg'][0],ready_monitors['stm_b_bg'][1],color='gray', label = 'bg')
     if currents_to_plot['curr_l']: plt.plot(ready_monitors['stm_b_l'][0],ready_monitors['stm_b_l'][1],color='brown', label = 'l')
     if currents_to_plot['curr_net']: plt.plot(ready_monitors['stm_b_net'][0],ready_monitors['stm_b_net'][1],linestyle='-.', color='purple', label ='net')
-    if currents_to_plot['curr_e']: plt.plot(ready_monitors['stm_b_e'][0],ready_monitors['stm_b_e'][1],linestyle='-.', color='black', label ='E')
+    if currents_to_plot['curr_e']: plt.plot(ready_monitors['stm_b_e'][0],ready_monitors['stm_b_e'][1], color='black', label ='E')
 
     plt.rcParams['font.size'] = '18'
     plt.xlabel('Time [s]')
