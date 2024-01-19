@@ -92,3 +92,12 @@
 #       - if the current to all neurons are the same in one population, they can still be different from one population to another. this can be set by curr_bg_equal_to_pop parameter.
 
 # 0adee5535e7fdef2c943c3cfb1978036ab405be6: in previous commit, the rand function was also modified so that the noise is symmetric around base.
+
+# 8404b9ce38014d4fe1c325c55b70b78f5bc3b3b7: the Poisson population was added and merged back to the brnach. I still geth synchronous activity in population P.
+#       I am guessing this because of the adaptation in combination with P to P current. 
+#       I think synchronicity comes from the P adaptation in combination with P to P current.
+#       P to P current eliminates the effect of Poisson current in time. Since P to P current leads more and more P neurons to fire at the same time and get adapted at the same time.
+#       so the next time the adaptation decays to a certain degree, most of these cells fire together.
+#       one way to resolve it is to make the times constant for the adaptation different from neuron to neuron. but how to do it without introducing any kind of noise to adaptation?
+#       I should either add noise to adaptation of eliminate P to P current.
+#       I will takel the latte rapproach first.
