@@ -16,12 +16,10 @@ def build_network(net_params, initial_condition):
     data_to_save = {}
         
     neuron_eqs = '''
-        dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt)/mem_cap: volt (unless refractory)
-        curr_l = g_leak*(v_reset - v) : amp
-        dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
+        dv/dt = ( curr_l + curr_syn + curr_bg - curr_adapt + curr_e)/mem_cap: volt (unless refractory)
         curr_syn = curr_p + curr_b : amp
+        curr_net = curr_l + curr_syn + curr_bg - curr_adapt + curr_e : amp
         curr_bg : amp
-        curr_net = curr_l + curr_syn + curr_bg - curr_adapt : amp
         mem_cap : farad
         g_leak : siemens
         e_rever : volt
@@ -32,8 +30,16 @@ def build_network(net_params, initial_condition):
         J_spi : amp
         g_ip : siemens
         g_ib : siemens
+        g_ie : siemens
     '''
+    curr_l_eqs = '''
+        curr_l = g_leak*(v_reset - v) : amp
+        '''
     
+    curr_adapt_eqs = '''
+        dcurr_adapt/dt = -curr_adapt/tau_adapt : amp
+        '''
+
     curr_p_eqs = '''
         curr_p = g_p*(e_p - v) : amp
         dg_p/dt = -g_p/ tau_d_p : siemens
@@ -47,13 +53,22 @@ def build_network(net_params, initial_condition):
         e_b : volt
         tau_d_b: second
     '''
+    curr_e_eqs = '''
+        curr_e = g_e * (e_e - v): amp
+        dg_e / dt = -g_e / tau_d_e: siemens
+        e_e : volt
+        tau_d_e: second
+    '''
+
     
-    all_eqs = neuron_eqs + curr_p_eqs + curr_b_eqs
+    all_eqs = neuron_eqs + curr_l_eqs + curr_adapt_eqs + curr_p_eqs + curr_b_eqs + curr_e_eqs
 
     """ CREATE CELL POPULATIONS """
 
     n_p = int(net_params['n_p'].get_param())
     n_b = int(net_params['n_b'].get_param())
+    n_e = int(net_params['n_e'].get_param())
+    poisson_rate = net_params['poisson_rate'].get_param()
     all_neurons = []
             
     pop_p = NeuronGroup(n_p, model=all_eqs, threshold='v > v_stop', reset='''v = v_reset
@@ -66,6 +81,8 @@ def build_network(net_params, initial_condition):
                         ''', refractory='tau_refr', method='euler', name='pop_b')
     all_neurons.append(pop_b)
 
+    pop_e = PoissonGroup(n_e, rates = poisson_rate, name='pop_e')
+
     for pop in all_neurons:
         if pop.name == 'pop_p':
             pop.mem_cap = net_params['mem_cap_p'].get_param()
@@ -76,6 +93,7 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_p'].get_param()
             pop.g_ip = net_params['g_pp'].get_param()
             pop.g_ib = net_params['g_pb'].get_param()
+            pop.g_ie = net_params['g_pe'].get_param()
             pop.v_stop = net_params['v_stop_p'].get_param()
             pop.e_rever = pop.v_reset
             
@@ -88,14 +106,17 @@ def build_network(net_params, initial_condition):
             pop.J_spi = net_params['J_spi_b'].get_param()
             pop.g_ip = net_params['g_bp'].get_param()
             pop.g_ib = net_params['g_bb'].get_param()
+            pop.g_ie = net_params['g_be'].get_param()
             pop.v_stop = net_params['v_stop_b'].get_param()
             pop.e_rever = pop.v_reset
         
         pop.tau_refr = net_params['tau_refr'].get_param()
         pop.tau_d_p = net_params['tau_d_p'].get_param()
         pop.tau_d_b = net_params['tau_d_b'].get_param()
+        pop.tau_d_e = net_params['tau_d_e'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
+        pop.e_e = net_params['e_e'].get_param()
 
     curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
     curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
@@ -105,12 +126,13 @@ def build_network(net_params, initial_condition):
     pop_p_noise_dim = 1 if net_params['curr_bg_equal_to_neurons'].get_param() else pop_p.N
     pop_b_noise_dim = 1 if net_params['curr_bg_equal_to_neurons'].get_param() else pop_b.N
     curr_bg_equal_mean_to_pop = net_params['curr_bg_equal_to_pop'].get_param()
-    @network_operation(dt=noise_dt)
-    def change_curr_bg():        
-        noise_p = uniform(-1,1,pop_p_noise_dim)
-        noise_b = noise_p[:pop_b_noise_dim] if curr_bg_equal_mean_to_pop else uniform(-1,1,pop_b_noise_dim)
-        pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp_p*noise_p
-        pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp_b*noise_b
+    if net_params['curr_bg_nosie'].get_param():
+        @network_operation(dt=noise_dt)
+        def change_curr_bg():        
+            noise_p = uniform(-1,1,pop_p_noise_dim)
+            noise_b = noise_p[:pop_b_noise_dim] if curr_bg_equal_mean_to_pop else uniform(-1,1,pop_b_noise_dim)
+            pop_p.curr_bg = curr_bg_base_p - curr_bg_noise_amp_p*noise_p
+            pop_b.curr_bg = curr_bg_base_b - curr_bg_noise_amp_b*noise_b
 
     built_network = Network(collect())
     
@@ -130,6 +152,14 @@ def build_network(net_params, initial_condition):
     prob_bb = net_params['prob_bb'].get_param()
     conn_bb = Connectivity(prob_bb, n_b, n_b, 'conn_bb')
     data_to_save['conn_bb'] = conn_bb
+
+    prob_pe = net_params['prob_pe'].get_param()
+    conn_pe = Connectivity(prob_pe, n_e, n_p, 'conn_pe')
+    data_to_save['conn_pe'] = conn_pe
+
+    prob_be = net_params['prob_be'].get_param()
+    conn_be = Connectivity(prob_be, n_e, n_b, 'conn_be')
+    data_to_save['conn_be'] = conn_be
 
     tau_l = net_params['tau_l'].get_param()
     
@@ -156,6 +186,18 @@ def build_network(net_params, initial_condition):
     syn_bb.connect(i=conn_bb.pre_index, j=conn_bb.post_index)
     built_network.add(syn_bb)
     print('B->B: %s' % f'{syn_bb.N[:]:,}')
+
+    syn_pe = Synapses(pop_e, pop_p, on_pre='g_e += g_ie',
+                      delay=tau_l, name='syn_pe')
+    syn_pe.connect(i=conn_pe.pre_index, j=conn_pe.post_index)
+    built_network.add(syn_pe)
+    print('E->P: %s' % f'{syn_pe.N[:]:,}')
+
+    syn_be = Synapses(pop_e, pop_b, on_pre='g_e += g_ie',
+                      delay=tau_l, name='syn_be')
+    syn_be.connect(i=conn_be.pre_index, j=conn_be.post_index)
+    built_network.add(syn_be)
+    print('E->B: %s' % f'{syn_be.N[:]:,}')
         
     if initial_condition == 'none':
         pop_p.v = pop_p.e_rever -10*rand(n_p)*mV
@@ -219,31 +261,33 @@ def record_p_currents(built_network, used_net_params, test_params, currents_to_r
     rec_adapt_num = int(test_params['rec_adapt_num'].get_param())
 
     pop_p = built_network['pop_p']
+    neurons_to_record = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
 
     # monitor P current to neurons in population P
     if currents_to_record['curr_p']:
-        neurons_to_record_pp = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-        stm_pp = StateMonitor(pop_p, 'curr_p', record=neurons_to_record_pp, name='stm_pp')
+        stm_pp = StateMonitor(pop_p, 'curr_p', record=neurons_to_record, name='stm_pp')
         built_network.add(stm_pp)
 
 
     # monitor background current to neurons in population P
     if currents_to_record['curr_bg']:
-        neurons_to_record_bg = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-        stm_p_bg = StateMonitor(pop_p, 'curr_bg', record=neurons_to_record_bg, name='stm_p_bg')
+        stm_p_bg = StateMonitor(pop_p, 'curr_bg', record=neurons_to_record, name='stm_p_bg')
         built_network.add(stm_p_bg)
 
     # monitor leak current to neurons in population P
     if currents_to_record['curr_l']:
-        neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-        stm_p_l = StateMonitor(pop_p, 'curr_l', record=neurons_to_record_l, name='stm_p_l')
+        stm_p_l = StateMonitor(pop_p, 'curr_l', record=neurons_to_record, name='stm_p_l')
         built_network.add(stm_p_l)
 
     # monitor net current to neurons in population P
     if currents_to_record['curr_net']:
-        neurons_to_record_l = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_adapt_num, replace=False)
-        stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record_l, name='stm_p_net')
+        stm_p_net = StateMonitor(pop_p, 'curr_net', record=neurons_to_record, name='stm_p_net')
         built_network.add(stm_p_net)
+
+    # monitor net current to neurons in population P
+    if currents_to_record['curr_e']:
+        stm_p_e = StateMonitor(pop_p, 'curr_e', record=neurons_to_record, name='stm_p_e')
+        built_network.add(stm_p_e)
 
     # a monitor for b current to neurons in population P is already defined.
 
@@ -281,6 +325,11 @@ def record_b_currents(built_network, used_net_params, test_params,currents_to_re
     if currents_to_record['curr_net']:
         stm_b_net = StateMonitor(pop_b, 'curr_net', record=neurons_to_record, name='stm_b_net')
         built_network.add(stm_b_net)
+
+    # monitor net current to neurons in population P
+    if currents_to_record['curr_e']:
+        stm_b_e = StateMonitor(pop_b, 'curr_e', record=neurons_to_record, name='stm_b_e')
+        built_network.add(stm_b_e)
 
 
     return built_network, test_params
