@@ -104,7 +104,7 @@ def get_default_net_params():
     # weights (conductances*(V-Erever) already):
     default_params = {**default_params,
                       **{'g_pp': Parameter(0.2, nS), 'g_bp': Parameter(0.05, nS),
-                         'g_pb': Parameter(1.75, nS), 'g_bb': Parameter(5, nS)}
+                         'g_pb': Parameter(0.7, nS), 'g_bb': Parameter(5, nS)}
                       }
     
     # synapses:
@@ -116,8 +116,11 @@ def get_default_net_params():
 
     # parameters related to Poisson population
     default_params = {**default_params,
-                      **{'n_e': Parameter(500), 'tau_d_e': Parameter(2, ms), 'e_e': Parameter(0, mV),
-                         'poisson_rate': Parameter(50, Hz),
+                      **{'n_e_p': Parameter(500), 'tau_d_e_p': Parameter(2, ms),
+                         'poisson_rate_p': Parameter(50, Hz),
+                         'n_e_b': Parameter(500), 'tau_d_e_b': Parameter(2, ms),
+                         'poisson_rate_b': Parameter(50, Hz),
+                         'e_e': Parameter(0, mV),
                          'g_pe': Parameter(0, nS), 'g_be': Parameter(0, nS),
                          'prob_pe': Parameter(0.1), 'prob_be': Parameter(0.1)}
                      }

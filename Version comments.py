@@ -104,3 +104,6 @@
 
 # 4392d68ae2786e0d41f51c2cc253a2dd4550b4bf:
 #       creating a new branch to work on Stefano's diea. the diea is to adjust the Poisson current according to the A to B and P currents from his lab rotation.
+
+# 73d188d522783886d5c9b154e420247c3808d62d:
+#       to get a poisson curernt such that the mean current to the population is Poisson distribution, I had to reduce the number of neurons in Poisson distribution significantly.

@@ -67,8 +67,10 @@ def build_network(net_params, initial_condition):
 
     n_p = int(net_params['n_p'].get_param())
     n_b = int(net_params['n_b'].get_param())
-    n_e = int(net_params['n_e'].get_param())
-    poisson_rate = net_params['poisson_rate'].get_param()
+    n_e_p = int(net_params['n_e_p'].get_param())
+    n_e_b = int(net_params['n_e_b'].get_param())
+    poisson_rate_p = net_params['poisson_rate_p'].get_param()
+    poisson_rate_b = net_params['poisson_rate_b'].get_param()
     all_neurons = []
             
     pop_p = NeuronGroup(n_p, model=all_eqs, threshold='v > v_stop', reset='''v = v_reset
@@ -81,7 +83,8 @@ def build_network(net_params, initial_condition):
                         ''', refractory='tau_refr', method='euler', name='pop_b')
     all_neurons.append(pop_b)
 
-    pop_e = PoissonGroup(n_e, rates = poisson_rate, name='pop_e')
+    pop_e_p = PoissonGroup(n_e_p, rates = poisson_rate_p, name='pop_e_p')
+    pop_e_b = PoissonGroup(n_e_b, rates = poisson_rate_b, name='pop_e_b')
 
     for pop in all_neurons:
         if pop.name == 'pop_p':
@@ -96,6 +99,7 @@ def build_network(net_params, initial_condition):
             pop.g_ie = net_params['g_pe'].get_param()
             pop.v_stop = net_params['v_stop_p'].get_param()
             pop.e_rever = pop.v_reset
+            pop.tau_d_e = net_params['tau_d_e_p'].get_param()
             
         elif pop.name == 'pop_b':
             pop.mem_cap = net_params['mem_cap_b'].get_param()
@@ -109,15 +113,16 @@ def build_network(net_params, initial_condition):
             pop.g_ie = net_params['g_be'].get_param()
             pop.v_stop = net_params['v_stop_b'].get_param()
             pop.e_rever = pop.v_reset
+            pop.tau_d_e = net_params['tau_d_e_b'].get_param()
         
         pop.tau_refr = net_params['tau_refr'].get_param()
         pop.tau_d_p = net_params['tau_d_p'].get_param()
         pop.tau_d_b = net_params['tau_d_b'].get_param()
-        pop.tau_d_e = net_params['tau_d_e'].get_param()
         pop.e_p = net_params['e_p'].get_param()
         pop.e_b = net_params['e_b'].get_param()
         pop.e_e = net_params['e_e'].get_param()
 
+    # parameters related to current background with noise
     curr_bg_base_p = net_params['curr_bg_base_p'].get_param()
     curr_bg_base_b = net_params['curr_bg_base_b'].get_param()
     curr_bg_noise_amp_p = net_params['curr_bg_noise_amp_p'].get_param()
@@ -154,11 +159,11 @@ def build_network(net_params, initial_condition):
     data_to_save['conn_bb'] = conn_bb
 
     prob_pe = net_params['prob_pe'].get_param()
-    conn_pe = Connectivity(prob_pe, n_e, n_p, 'conn_pe')
+    conn_pe = Connectivity(prob_pe, n_e_p, n_p, 'conn_pe')
     data_to_save['conn_pe'] = conn_pe
 
     prob_be = net_params['prob_be'].get_param()
-    conn_be = Connectivity(prob_be, n_e, n_b, 'conn_be')
+    conn_be = Connectivity(prob_be, n_e_b, n_b, 'conn_be')
     data_to_save['conn_be'] = conn_be
 
     tau_l = net_params['tau_l'].get_param()
@@ -187,13 +192,13 @@ def build_network(net_params, initial_condition):
     built_network.add(syn_bb)
     print('B->B: %s' % f'{syn_bb.N[:]:,}')
 
-    syn_pe = Synapses(pop_e, pop_p, on_pre='g_e += g_ie',
+    syn_pe = Synapses(pop_e_p, pop_p, on_pre='g_e += g_ie',
                       delay=tau_l, name='syn_pe')
     syn_pe.connect(i=conn_pe.pre_index, j=conn_pe.post_index)
     built_network.add(syn_pe)
     print('E->P: %s' % f'{syn_pe.N[:]:,}')
 
-    syn_be = Synapses(pop_e, pop_b, on_pre='g_e += g_ie',
+    syn_be = Synapses(pop_e_b, pop_b, on_pre='g_e += g_ie',
                       delay=tau_l, name='syn_be')
     syn_be.connect(i=conn_be.pre_index, j=conn_be.post_index)
     built_network.add(syn_be)
