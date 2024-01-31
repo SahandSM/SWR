@@ -1,6 +1,38 @@
 import matplotlib.pyplot as plt
 from brian2 import *
 
+def plot_potential_distriution(built_network,time):
+    timestep = int(time/0.0001)
+
+    plt.hist(built_network['stm_p_v'].v[:,timestep]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time}')
+    plt.title(f'Histogram of the of potential')
+    plt.xlabel('current [pA]')
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.show()
+
+def plot_potential_dist(built_network,sim_time):
+    time_array = built_network['stm_p_v'].t/second
+    voltage_array = built_network['stm_p_v'].v/volt*1000
+
+    x_len = len(time_array)
+    y_len = len(voltage_array)
+
+    fig = figure(figsize=(12,4))
+    plt.rcParams['font.size'] = '18'
+
+
+    x_array = np.tile(time_array,(y_len,1)).flatten()
+    y_array = voltage_array.flatten()
+    heights, x_edges, y_edges = np.histogram2d(x_array, y_array, bins = [x_len, 50])
+    plt.pcolormesh(x_edges, y_edges, heights.T, cmap='Blues', rasterized=True, vmax=int(y_len)*0.10)
+    plt.title('Histogram of potential over time')
+    plt.xlabel('time [s]')
+    plt.ylabel('potential [mV]')
+    plt.xticks(np.arange(0,sim_time+3,1))
+    fig.tight_layout()
+    plt.show()
+
 def plot_currents_P_neurons(built_network, currents_to_plot, x_axis_limit,y_axis_limit=None):
     fig = plt.figure(figsize=(12,5))
     if currents_to_plot['curr_adp']: plt.plot(built_network['stm_p_adp'].t,-built_network['stm_p_adp'].curr_adapt[0]/pA,color='magenta', label ='adp')
