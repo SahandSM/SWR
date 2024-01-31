@@ -1,35 +1,44 @@
 import matplotlib.pyplot as plt
 from brian2 import *
 
-def plot_potential_distriution(built_network,time):
-    timestep = int(time/0.0001)
+def plot_potential_distriution(built_network,x_axis_limit):
+    time1 = x_axis_limit[0]
+    time2 = mean(x_axis_limit)
+    time3 = x_axis_limit[1]
 
-    plt.hist(built_network['stm_p_v'].v[:,timestep]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time}')
+    timestep = [int(time1/0.0001),int(time2/0.0001),int(time3/0.0001)]
+    plt.hist(built_network['stm_p_v'].v[:,timestep[0]]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time1}')
+    plt.hist(built_network['stm_p_v'].v[:,timestep[1]]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time2}')
+    plt.hist(built_network['stm_p_v'].v[:,timestep[2]-1]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time3}')
     plt.title(f'Histogram of the of potential')
     plt.xlabel('current [pA]')
     plt.ylabel('Frequency')
     plt.legend()
     plt.show()
 
-def plot_potential_dist(built_network,sim_time):
+def get_hist_data(built_network,sim_time,x_axis_limit,run_hist=True):
     time_array = built_network['stm_p_v'].t/second
     voltage_array = built_network['stm_p_v'].v/volt*1000
 
     x_len = len(time_array)
     y_len = len(voltage_array)
 
-    fig = figure(figsize=(12,4))
-    plt.rcParams['font.size'] = '18'
-
-
     x_array = np.tile(time_array,(y_len,1)).flatten()
     y_array = voltage_array.flatten()
     heights, x_edges, y_edges = np.histogram2d(x_array, y_array, bins = [x_len, 50])
+    return heights, x_edges, y_edges, y_len
+
+def plot_potential_dist(hist_data, sim_time, x_axis_limit,):
+    heights, x_edges, y_edges, y_len = hist_data
+    
+    fig = figure(figsize=(12,4))
+    plt.rcParams['font.size'] = '18'
     plt.pcolormesh(x_edges, y_edges, heights.T, cmap='Blues', rasterized=True, vmax=int(y_len)*0.10)
     plt.title('Histogram of potential over time')
     plt.xlabel('time [s]')
     plt.ylabel('potential [mV]')
     plt.xticks(np.arange(0,sim_time+3,1))
+    plt.xlim(x_axis_limit)
     fig.tight_layout()
     plt.show()
 
