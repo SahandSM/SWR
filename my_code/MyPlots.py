@@ -1,22 +1,47 @@
 import matplotlib.pyplot as plt
 from brian2 import *
 
+def plot_poisson_dist(ready_monitors,dist_to_plot):
+    mean_PE = mean(ready_monitors['stm_p_e'][1])
+    std_PE = std(ready_monitors['stm_p_e'][1])
+    mean_BE = mean(ready_monitors['stm_b_e'][1])
+    std_BE = std(ready_monitors['stm_b_e'][1])
+    if dist_to_plot['P']: plt.hist(ready_monitors['stm_p_e'][1], bins=50, edgecolor='black',alpha=0.5,label=f'PE μ:{mean_PE:0.0f} σ:{std_PE:0.0f}')
+    if dist_to_plot['B']:plt.hist(ready_monitors['stm_b_e'][1], bins=50, edgecolor='black',alpha=0.5,label =f'BE μ:{mean_BE:0.0f} σ:{std_BE:0.0f}')
+    plt.title('Histogram of the Poisson current')
+    plt.xlabel('current [pA]')
+    plt.ylabel('Frequency')
+    plt.legend()
+    plt.show()
+
 def plot_potential_distriution(built_network,x_axis_limit):
+    '''
+    plots the distribution of population potential at three slices
+    '''
     time1 = x_axis_limit[0]
     time2 = mean(x_axis_limit)
     time3 = x_axis_limit[1]
 
     timestep = [int(time1/0.0001),int(time2/0.0001),int(time3/0.0001)]
-    plt.hist(built_network['stm_p_v'].v[:,timestep[0]]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time1}')
-    plt.hist(built_network['stm_p_v'].v[:,timestep[1]]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time2}')
-    plt.hist(built_network['stm_p_v'].v[:,timestep[2]-1]/mV, bins=50, edgecolor='black',alpha=0.5,label=f'time: {time3}')
+
+    slice1 = built_network['stm_p_v'].v[:,timestep[0]]/mV
+    slice2 = built_network['stm_p_v'].v[:,timestep[1]]/mV
+    slice3 = built_network['stm_p_v'].v[:,timestep[2]-1]/mV
+
+    stat1 = (mean(slice1),std(slice1))
+    stat2 = (mean(slice2),std(slice2))
+    stat3 = (mean(slice3),std(slice3))
+
+    plt.hist(slice1, bins=50, edgecolor='black',alpha=0.3,label=f't:{time1} μ:{stat1[0]:0.0f} σ:{stat1[1]:0.0f}')
+    plt.hist(slice2, bins=50, edgecolor='black',alpha=0.3,label=f't:{time2} μ:{stat2[0]:0.0f} σ:{stat2[1]:0.0f}')
+    plt.hist(slice3, bins=50, edgecolor='black',alpha=0.3,label=f't:{time3} μ:{stat3[0]:0.0f} σ:{stat3[1]:0.0f}')
     plt.title(f'Histogram of the of potential')
     plt.xlabel('current [pA]')
     plt.ylabel('Frequency')
     plt.legend()
     plt.show()
 
-def get_hist_data(built_network,sim_time,x_axis_limit,run_hist=True):
+def get_hist_data(built_network):
     time_array = built_network['stm_p_v'].t/second
     voltage_array = built_network['stm_p_v'].v/volt*1000
 
@@ -29,6 +54,9 @@ def get_hist_data(built_network,sim_time,x_axis_limit,run_hist=True):
     return heights, x_edges, y_edges, y_len
 
 def plot_potential_dist(hist_data, sim_time, x_axis_limit,):
+    '''
+    plots the potential distribution of population P over time
+    '''
     heights, x_edges, y_edges, y_len = hist_data
     
     fig = figure(figsize=(12,4))
