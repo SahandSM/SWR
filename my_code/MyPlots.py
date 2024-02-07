@@ -32,9 +32,9 @@ def plot_potential_distriution(built_network,x_axis_limit):
     stat2 = (mean(slice2),std(slice2))
     stat3 = (mean(slice3),std(slice3))
 
-    plt.hist(slice1, bins=50, edgecolor='black',alpha=0.3,label=f't:{time1} μ:{stat1[0]:0.0f} σ:{stat1[1]:0.0f}')
-    plt.hist(slice2, bins=50, edgecolor='black',alpha=0.3,label=f't:{time2} μ:{stat2[0]:0.0f} σ:{stat2[1]:0.0f}')
-    plt.hist(slice3, bins=50, edgecolor='black',alpha=0.3,label=f't:{time3} μ:{stat3[0]:0.0f} σ:{stat3[1]:0.0f}')
+    plt.hist(slice1, bins=50, edgecolor='black',alpha=0.3,label=f't:{time1} μ:{stat1[0]:0.0f} σ:{stat1[1]:0.1f}')
+    plt.hist(slice2, bins=50, edgecolor='black',alpha=0.3,label=f't:{time2} μ:{stat2[0]:0.0f} σ:{stat2[1]:0.1f}')
+    plt.hist(slice3, bins=50, edgecolor='black',alpha=0.3,label=f't:{time3} μ:{stat3[0]:0.0f} σ:{stat3[1]:0.1f}')
     plt.title(f'Histogram of the of potential')
     plt.xlabel('current [pA]')
     plt.ylabel('Frequency')
