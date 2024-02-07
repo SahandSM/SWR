@@ -349,7 +349,7 @@ def record_p_v(built_network, used_net_params, test_params):
 
     # monitor P potential for rec_num neurons
 
-    stm_p_v = StateMonitor(pop_p, 'v', record=True, name='stm_p_v')
+    stm_p_v = StateMonitor(pop_p, 'v', record=neurons_to_record, name='stm_p_v')
     built_network.add(stm_p_v)
 
     return built_network, test_params
