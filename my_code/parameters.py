@@ -124,6 +124,9 @@ def get_default_net_params():
                          'g_pe': Parameter(0, nS), 'g_be': Parameter(0, nS),
                          'prob_pe': Parameter(0.1), 'prob_be': Parameter(0.1)}
                      }
+    
+    default_params = {**default_params,
+                      **{'initial_v_noise' : Parameter(10),'initial_adapt_noise' : Parameter(100)  }}
 
     return default_params
 

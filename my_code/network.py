@@ -203,12 +203,14 @@ def build_network(net_params, initial_condition):
     syn_be.connect(i=conn_be.pre_index, j=conn_be.post_index)
     built_network.add(syn_be)
     print('E->B: %s' % f'{syn_be.N[:]:,}')
-        
+    
+    initial_v_noise = net_params['initial_v_noise'].get_param()
+    initial_adapt_noise = net_params['initial_adapt_noise'].get_param()
     if initial_condition == 'none':
-        pop_p.v = pop_p.e_rever -10*rand(n_p)*mV
-        pop_b.v = pop_b.e_rever -10*rand(n_b)*mV
-        pop_p.curr_adapt = 100*rand(n_p)*pA
-        pop_b.curr_adapt = 0
+        pop_p.v = pop_p.e_rever - initial_v_noise*rand(n_p)*mV
+        pop_b.v = pop_b.e_rever - initial_v_noise*rand(n_b)*mV
+        pop_p.curr_adapt = initial_adapt_noise*rand(n_p)*pA
+        pop_b.curr_adapt = initial_adapt_noise*rand(n_b)*pA
     
     used_params = get_used_params(net_params)
 
