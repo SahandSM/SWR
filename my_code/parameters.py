@@ -89,8 +89,10 @@ def get_default_net_params():
     
     # neuron populations:
     default_params = {**default_params,
-                      **{'n_p': Parameter(8200), 'curr_bg_p': Parameter(200, pA),
-                         'n_b': Parameter(135), 'curr_bg_b': Parameter(200, pA)}
+                      **{'n_p': Parameter(8200), 'curr_bg_p': Parameter(200, pA),'curr_bg_base_p':Parameter(110,pA), 'curr_bg_noise_amp_p': Parameter(20,pA),
+                         'n_b': Parameter(135), 'curr_bg_b': Parameter(200, pA), 'curr_bg_base_b':Parameter(110,pA), 'curr_bg_noise_amp_b': Parameter(20,pA), 
+                         'curr_bg_noise_dt': Parameter(10,ms),'curr_bg_equal_to_neurons': Parameter(False), 'curr_bg_equal_to_pop': Parameter(False),
+                         'curr_bg_nosie': Parameter(False)}
                       }
 
     # connectivity and other dimensionless parameters:
@@ -102,7 +104,7 @@ def get_default_net_params():
     # weights (conductances*(V-Erever) already):
     default_params = {**default_params,
                       **{'g_pp': Parameter(0.2, nS), 'g_bp': Parameter(0.05, nS),
-                         'g_pb': Parameter(1.75, nS), 'g_bb': Parameter(5, nS)}
+                         'g_pb': Parameter(0.7, nS), 'g_bb': Parameter(5, nS)}
                       }
     
     # synapses:
@@ -111,6 +113,17 @@ def get_default_net_params():
                          'e_p': Parameter(0, mV), 'e_b': Parameter(-70, mV),
                          'tau_l': Parameter(1, ms)}
                       }
+
+    # parameters related to Poisson population
+    default_params = {**default_params,
+                      **{'n_e_p': Parameter(500), 'tau_d_e_p': Parameter(2, ms),
+                         'poisson_rate_p': Parameter(50, Hz),
+                         'n_e_b': Parameter(500), 'tau_d_e_b': Parameter(2, ms),
+                         'poisson_rate_b': Parameter(50, Hz),
+                         'e_e': Parameter(0, mV),
+                         'g_pe': Parameter(0, nS), 'g_be': Parameter(0, nS),
+                         'prob_pe': Parameter(0.1), 'prob_be': Parameter(0.1)}
+                     }
 
     return default_params
 
