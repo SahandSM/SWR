@@ -107,3 +107,6 @@
 
 # 73d188d522783886d5c9b154e420247c3808d62d:
 #       to get a poisson curernt such that the mean current to the population is Poisson distribution, I had to reduce the number of neurons in Poisson distribution significantly.
+
+# c61afff22c3eca8302b15d2f65a5aefa6c23e906:
+#       will be plotting the distribution of population P potential over time to see how it changes before each event.

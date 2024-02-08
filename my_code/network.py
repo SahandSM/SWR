@@ -339,3 +339,19 @@ def record_b_currents(built_network, used_net_params, test_params,currents_to_re
 
     return built_network, test_params
 
+def record_p_v(built_network, used_net_params, test_params):
+
+    test_seed = int(test_params['random_seed'].get_param())
+    rec_num = 500
+
+    pop_p = built_network['pop_p']
+    neurons_to_record = np.random.default_rng(test_seed).choice(pop_p.N, size=rec_num, replace=False)
+
+    # monitor P potential for rec_num neurons
+
+    stm_p_v = StateMonitor(pop_p, 'v', record=neurons_to_record, name='stm_p_v')
+    built_network.add(stm_p_v)
+
+    return built_network, test_params
+
+
